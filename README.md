@@ -49,7 +49,7 @@ Navigate to the MFCL folder and run:
 Alternatively, copy the required files into a new folder,
 
 ```
-11.par
+13.par
 skj.frq
 skj.tag
 doitall.sh
