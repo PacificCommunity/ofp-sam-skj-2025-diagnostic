@@ -1,0 +1,450 @@
+#  ------------------------
+#  Create initial 00.par file
+#  ------------------------
+#  mfclo64 skj.frq skj.ini 00.par -makepar  # does not work within a script
+#  ------------------------
+#
+#  ------------------------
+#  PHASE 1 - initial fit with control phases
+#  ------------------------
+#
+  mfclo64 skj.frq 00.par 01.par -file - <<PHASE1
+#
+#-------------------------------------------------------------------------------  
+#  Initial Phase Control option  
+  1 32 7         # control phase - keep growth parameters fixed
+  1 387 0        # optimised scaling 
+#-------------------------------------------------------------------------------
+# Catch conditioned flags
+#  general activation
+  1 373 1         # activated CC with Baranov equation
+  1 393 0         # activate estimation of: kludged_equilib_coffs, and implicit_fm_level_regression_pars
+  2 92 2          # specifies the catch-conditioned option with Baranov equation
+# - catch equation bounds
+  2 116 80        # value for Zmax_fish in the catch equations
+  2 189 80        # the fraction of Zmax_fish above which the penalty is calculated
+  1 382 300       # weight for Zmax_fish penalty - set to 300 to avoid triggering Zmax_flag=1. Found by T&E
+# De-activate any catch errors flags
+  -999 1 0
+  -999 4 0
+  -999 10 0
+  -999 15 0
+  -999 13 0
+# -- survey fisheries defined
+#  Index wt   Time varying CV
+  -33 92 27   -33 94 1    -33 66 1      # PL JP 1
+  -34 92 28   -34 94 1    -34 66 1      # PL JP 2
+  -35 92 18   -35 94 1    -35 66 1      # PL JP 3
+  -36 92 19   -36 94 1    -36 66 1      # PL JP 4
+  -37 92 19   -37 94 1    -37 66 1      # PS PH 5  (appended based on Thom's review of CPUE analysis
+  -38 92 22   -38 94 1    -38 66 1      # PL JP 7 
+  -39 92 24   -39 94 1    -39 66 1      # PL JP 8
+  -40 92 27   -40 94 1    -40 66 1      # PS UNA 6
+  -41 92 15   -41 94 1    -41 66 1      # PS UNA 7
+  -42 92 23   -42 94 1    -42 66 1      # PS UNA 8
+# -- Grouping flags for survey CPUE
+    -1 99 1
+    -2 99 2
+    -3 99 3
+    -4 99 4
+    -5 99 5
+    -6 99 6
+    -7 99 7
+    -8 99 8
+    -9 99 9
+   -10 99 10
+   -11 99 11
+   -12 99 12
+   -13 99 13
+   -14 99 14
+   -15 99 15
+   -16 99 16
+   -17 99 17
+   -18 99 18
+   -19 99 19
+   -20 99 20
+   -21 99 21
+   -22 99 22
+   -23 99 23
+   -24 99 24
+   -25 99 25
+   -26 99 26
+   -27 99 27
+   -28 99 28
+   -29 99 29
+   -30 99 30
+   -31 99 31
+   -32 99 32
+   -33 99 33     # PL index fisheries grouped initially
+   -34 99 33     #
+   -35 99 33     #
+   -36 99 33     #
+   -37 99 34
+   -38 99 33     #
+   -39 99 33     #
+   -40 99 35     # PS index fisheries grouped initially
+   -41 99 35     #
+   -42 99 35     #
+# Recruitment and Initial Population Settings 
+   1 149 100      # penalty on recruitment devs n/10 so for 100 = 1/sqrt(2*100/10) - CV ~ 0.22    
+   1 400 4        # set the last 2 recruitment deviates to 0
+   1 398 0        # Sets terminal recruitments at geometric mean 
+   2 113 0        # estimate initpop/totpop scaling parameter
+   2 177 1        # use old totpop scaling method
+   2 32 1         # totpop estimated from this phase   
+   2 57 4         # 4 recruitments per year
+   2 93 4         # 4 recruitments per year
+   2 94 1         # Use equilibium initial population
+   2 128 102      # Initial Z is M*1.02
+   2 95 0         # Use average Z for first 20 periods for equil. init. pop.
+#  -- kludged initial survival relationship
+   1 374 0        # Spline degree for initial survival
+   1 375 0        # penalty weight on initial survival
+   1 379 0        # penalty wt on high (>4) spline degrees for kludged_equilib_coeffs
+#-------------------------------------------------------------------------------
+# Likelihood Component
+   1 141 3        # Robust normal likelihood function for LF data
+   1 111 4        # Negative binomial likelihood function for tags
+   -999 49 100    # Divisor for LF sample sizes effective sample size 
+
+#-------------------------------------------------------------------------------
+# Tagging Related Flags
+#
+  1 33 99         # Maximum tag reporting rate for all fisheries is 0.99
+  2 198 1         # Turn on release group reporting rates which are specified in the .ini
+  1 305 1 	  # Estimate the variance parameter of the negative binomial 
+  -999 43 1       # Var parameter estimated for all fisheries 
+  -999 44 1       # All fisheries grouped for estimating tag neg bin var parameter
+  2 96 12         # Tags are pooled across release groups after 12 periods   CHECK THIS - LOWER AND WOULD SPEED UP
+
+# ------------------------------------------------------------------------------
+# Selectivity grouping  and form     1=logistic  2=doublenormal 3=cubic spine or length specific
+# -N 24 X is the selectivity grouping
+# -N 57 3 is cubic spline selectivity
+# -N 61 X establishes that there are X nodes in the spline
+ -999 26 3    # Use length-based selec
+ -999 3 16
+ 1 359 1000   # penalty to keep sel coeffs away from lower bound
+# Grping    Form (spline)  No. nodes  Asymp    zero sel age classes
+  -1 24  1    -1 57 3     -1 61 4           
+  -2 24  2    -2 57 3     -2 61 4
+  -3 24  3    -3 57 3     -3 61 3    -3 16 1   -3 75 3
+  -4 24  4    -4 57 3     -4 61 4
+  -5 24  5    -5 57 3     -5 61 4
+  -6 24  6    -6 57 3     -6 61 3    -6 16 1   -6 75 3
+  -7 24  7    -7 57 3     -7 61 4
+  -8 24  8    -8 57 3     -8 61 4
+  -9 24  9    -9 57 3     -9 61 3    -9 16 1   -9 75 3
+ -10 24 10   -10 57 3    -10 61 6
+ -11 24 11   -11 57 3    -11 61 5
+ -12 24 12   -12 57 3    -12 61 5
+ -13 24 13   -13 57 3    -13 61 5
+ -14 24 14   -14 57 3    -14 61 6
+ -15 24 15   -15 57 3    -15 61 4
+ -16 24 16   -16 57 3    -16 61 4
+ -17 24 17   -17 57 3    -17 61 5
+ -18 24 18   -18 57 3    -18 61 3   -18 16 1  -18 75 3
+ -19 24 19   -19 57 3    -19 61 4
+ -20 24 20   -20 57 3    -20 61 4
+ -21 24 21   -21 57 3    -21 61 4
+ -22 24 22   -22 57 3    -22 61 3   -22 16 1  -22 75 3
+ -23 24 23   -23 57 3    -23 61 4
+ -24 24 24   -24 57 3    -24 61 3   -24 16 1  -24 75 3
+ -25 24 25   -25 57 3    -25 61 4 
+ -26 24 26   -26 57 3    -26 61 4 
+ -27 24 27   -27 57 3    -27 61 4 
+ -28 24 28   -28 57 3    -28 61 3   -28 16 1  -28 75 3
+ -29 24 29   -29 57 3    -29 61 4 
+ -30 24 30   -30 57 3    -30 61 4 
+ -31 24 31   -31 57 3    -31 61 4 
+ -32 24 32   -32 57 3    -32 61 3   -32 16 1  -32 75 3
+ -33 24 33   -33 57 3    -33 61 4
+ -34 24 33   -34 57 3    -34 61 4
+ -35 24 33   -35 57 3    -35 61 4
+ -36 24 33   -36 57 3    -36 61 4
+ -37 24 34   -37 57 3    -37 61 5
+ -38 24 33   -38 57 3    -38 61 4
+ -39 24 33   -39 57 3    -39 61 4
+ -40 24 35   -40 57 3    -40 61 4
+ -41 24 35   -41 57 3    -41 61 4
+ -42 24 35   -42 57 3    -42 61 4
+#-------------------------------------------------------------------------------  
+#   Fishery groupings for tag return data
+   -1 32  1
+   -2 32  2
+   -3 32  3
+   -4 32  4
+   -5 32  5
+   -6 32  6
+   -7 32  7
+   -8 32  8
+   -9 32  9
+  -10 32 10  # PH DOM
+  -11 32 10  # ID DOM
+  -12 32 10  # PH small PS
+  -13 32 10  # ID small PS
+  -14 32 10  # ID PL
+  -15 32 10  # PS ASS R5
+  -16 32 10  # PS UNA R5
+  -17 32 11
+  -18 32 12 
+  -19 32 13
+  -20 32 14  # PS ASS R6
+  -21 32 14  # PS UNA R6
+  -22 32 15
+  -23 32 16
+  -24 32 17
+  -25 32 18
+  -26 32 19  # PS ASS R7
+  -27 32 19  # PS UNA R7
+  -28 32 20
+  -29 32 21
+  -30 32 22  # PS ASS R8
+  -31 32 22  # PS UNA R8
+  -32 32 23
+  -33 32 24
+  -34 32 25
+  -35 32 26
+  -36 32 27
+  -37 32 28
+  -38 32 29
+  -39 32 30
+  -40 32 31
+  -41 32 32
+  -42 32 33
+# Turn on weighted spline for calculating maturity at age from length observations   
+  2 188 2 		
+# Start with Lorenzen M-at-age
+# 
+  2 109 3          # M-at-age from ini file, age_pars(2)
+#
+#
+PHASE1
+#
+#  ---------
+#   PHASE 2
+#  ---------
+  mfclo64 skj.frq 01.par 02.par -file - <<PHASE2
+#
+  2 113 0        # Turns of rec_init_diff estimation
+  1 1 500        # Sets no. of function evaluations for this phase
+  1 50 -2        # convergence criterion is 1E+1
+# Estimate movement coefficients   
+  2 68 1         # Estimate movement parameters    
+  2 69 1         # Use movement parameters
+  2 27 -1   	 # Set penalty for movement coefficient to 0.1
+#
+PHASE2
+#
+#  ---------
+#   PHASE 3
+#  ---------
+  mfclo64 skj.frq 02.par 03.par -file - <<PHASE3
+#
+  2 70 1        # Estimate time-series changes in recruitment distribution
+  2 71 1        # est. time series of reg recruitment
+  2 178 1       # constraint on regional recruitments
+#
+PHASE3
+#  ---------
+#   PHASE 4
+#  ---------
+  mfclo64 skj.frq 03.par 04.par -file - <<PHASE4
+#  Estimate regional distribution of recruitment           
+  -100000 1 1                             
+  -100000 2 1 
+  -100000 3 1 
+  -100000 4 1 
+  -100000 5 1 
+  -100000 6 1 
+  -100000 7 1
+  -100000 8 1 
+#
+#
+PHASE4
+#  ---------
+#   PHASE 5
+#  ---------
+  mfclo64 skj.frq 04.par 05.par -file - <<PHASE5
+#
+#  Dirichlet Multinomial (no random effects) settings
+   1 141 11         # selects DM-noRE likelihood
+   1 320 5          # implements tail compression
+   1 342 5000       # maximum ESS
+   -999 89 1        # Estimate relative sample size covariate
+   -999 69 1        # Estimate exponent of sacalar of LF sample size multiplier
+   -999 49 0        # Turn off RN sample size multiplier setting
+# -- grouping flags for DM parameters (by gear type - PL/PS, ID/PH/VN, LL)
+  -1 68  1 
+  -2 68  1
+  -3 68  2
+  -4 68  1
+  -5 68  1
+  -6 68  2
+  -7 68  1
+  -8 68  1
+  -9 68  2
+ -10 68  3
+ -11 68  3
+ -12 68  3
+ -13 68  3
+ -14 68  1
+ -15 68  4
+ -16 68  4
+ -17 68  3
+ -18 68  2
+ -19 68  1
+ -20 68  4
+ -21 68  4
+ -22 68  2
+ -23 68  1
+ -24 68  2
+ -25 68  1
+ -26 68  4
+ -27 68  4
+ -28 68  2
+ -29 68  1
+ -30 68  4
+ -31 68  4
+ -32 68  2
+ -33 68  1
+ -34 68  1
+ -35 68  1
+ -36 68  1
+ -37 68  3
+ -38 68  1
+ -39 68  1
+ -40 68  4
+ -41 68  4
+ -42 68  4
+#
+PHASE5
+#  ---------
+#   PHASE 6
+#  ---------
+  mfclo64 skj.frq 05.par 06.par -file - <<PHASE6
+#
+  1 1 500           # How many function evaluations
+  2 145 1           # Penalty wt. for SRR CV=0.7
+  2 146 1           # Make SRR parameters active
+  2 147 1           # No. time periods for recruitment lag
+  2 182 1 	    	# Annualized recruitments and average biomass
+  2 148 20          # Years (year quarters) from last year for avg. F  
+  2 155 4           # But not including last 4
+  1 149 0           # Turn off recruitment penalties against mean - frees up recruitment - should improve fit to compositions
+  2 162 0           # Estimate steepness 0 IS THE DEFAULT   meaning not estimated
+  2 163 0           # BH-SRR is parameterised using steepness. Value of 0 IS THE DEFAULT meaning it is parameterized with steepness
+  2 199 0           # start time period for yield calculation [4.5.11], made consistent with 2014 assessment - starts in 1982
+  2 200 4           # end time period for yield calculation [4.5.11]
+  -999 55 1         # Turn off fisheries for impact analysis [4.5.14]
+  2 193 1           # Turn on fisheries impact analyses
+  2 171 1           # Unfished calculations by estimated SRR
+  2 161 1           # Turn on the bias correction for the Beverton-Holt
+  2 116 200         # Increase Z bound for NR computations to 2.0
+  1 190 1           # Write plot.rep
+  1 187 1           # Write temporary_tag_report
+  1 188 1           # Write ests.rep
+  1 189 1           # Write .fit files
+  1 246 1           # Write independent variables report
+#
+PHASE6
+#  ---------
+#   PHASE 7
+#  ---------
+  mfclo64 skj.frq 06.par 07.par -file - <<PHASE7
+#
+    1 13 1          # Estimate L2
+    1 14 0          # k not estimated
+#
+PHASE7
+#  ---------
+#  PHASE 8
+#  ---------
+  mfclo64 skj.frq 07.par 08.par -file - <<PHASE8
+#
+    1 12 1          # Estimate L1
+    1 173 3         # Number of offsets estimated - 3 == age classes 2 and 3
+    1 184 1         # Estimate offsets
+#
+PHASE8
+#  ---------
+#   PHASE 9
+#  ---------
+  mfclo64 skj.frq 08.par 09.par -file - <<PHASE9
+#
+    1 15 1          # Estimate generic SD
+    1 16 1          # Estimate length-dependent SD
+#	
+PHASE9
+# ----------
+#  PHASE 10 - Estimate M scaling
+# ----------
+    mfclo64 skj.frq 09.par 10.par -file - <<PHASE10
+#
+  1 121 1           # Estimate M scaling
+  2 116 300         # Further relax the bound on Z
+  1 50 -4           # Convergence criteria - if achieved phase will terminate before full no. evaluations made
+  1 1 1000          # How many function evaluations
+#
+PHASE10
+# ----------
+#  PHASE 11 - OPR (Orthogonal Polynomial Recruitment)
+# ----------
+    mfclo64 skj.frq 10.par 11.par -file - <<PHASE11
+# OPR settings
+  1 155 51 1 221 51  # Sets degree for year effect
+  1 217 1            # Sets degree for season effect
+  1 216 10           # Sets degree for region effect
+  1 218 51           # Sets degree for region-season interaction effect
+  1 202 3            # Common year effect for last 3 years
+  1 210 3            # Likewise region effect
+  1 212 3            # Likewise season effect
+  1 214 3            # Likewise region-season interaction effect
+  1 183 0            # Common year effect for initial x years
+  1 204 0            # Common region effect for initial x years
+  1 206 0            # Common season effect for initial x years
+  1 208 0            # Common region-season interaction for initial x years
+PHASE11
+# ----------
+# PHASE 12 - ungroup indices and their selectivity
+# ----------
+    mfclo64 skj.frq 11.par 12.par -file - <<PHASE12
+# ungrp CPUE  ungrp selectivity
+  -33 99 33   -33 24 33
+  -34 99 34   -34 24 34
+  -35 99 35   -35 24 35
+  -36 99 36   -36 24 36
+  -37 99 37   -37 24 37
+  -38 99 38   -38 24 38
+  -39 99 39   -39 24 39
+  -40 99 40   -40 24 40
+  -41 99 41   -41 24 41
+  -42 99 42   -42 24 42
+#
+PHASE12
+# ----------
+# PHASE 13 - allow LL fisheries to have decreasing selectivity
+# ----------
+    mfclo64 skj.frq 12.par 13.par -file - <<PHASE13
+  -3 16 0
+  -6 16 0
+  -9 16 0
+ -18 16 0
+ -22 16 0
+ -24 16 0
+ -28 16 0
+ -32 16 0
+#
+PHASE13
+# ----------
+#  Calculate Hessian & related diagnostics
+# ----------
+# Hessian
+mfclo64 skj.frq 13.par hessian -switch 1 1 145 1
+# Compute eigenvalues
+mfclo64 skj.frq 13.par hessian -switch 1 1 145 5
+# Compute dependent variables needed for reference points
+mfclo64 skj.frq 13.par hessian -switch 2 1 37 1 1 145 2
+# Produce SD report
+mfclo64 skj.frq 13.par hessian -switch 1 1 145 4
+#

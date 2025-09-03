@@ -1,0 +1,42 @@
+1.	PL ALL 1
+2.	PS ALL 1
+3.	LL ALL 1
+4.	PL ALL 2
+5.	PS ALL 2
+6.	LL ALL 2
+7.	PL JP 3
+8.	PS ALL 3
+9.	LL ALL 3
+10.	Dom PH 5
+11.	Dom ID 5
+12.	PH small PS 5
+13.	ID small PS 5
+14.	PL ALL 5
+15.	PS ASSOC_no(PHPH, IDID, VN) 5
+16.	PS UNASSOC_no(PHPH, IDID, VN) 5
+17.	DOM VN 5
+18.	LL ALL 5
+19.	PL ALL 6
+20.	PS ASSOC 6
+21.	PS UNASSOC 6
+22.	LL ALL 6
+23.	PL ALL 4
+24.	LL ALL 4
+25.	PL ALL 7
+26.	PS ASSOC 7
+27.	PS UNASSOC 7
+28.	LL ALL 7
+29.	PL All 8
+30.	PS ASSOC 8
+31.	PS UNASSOC 8
+32.	LL ALL 8
+33.     Survey PL R1 (Fish 1)
+34.     Survey PL R2 (Fish 4)
+35.     Survey PL R3 (Fish 7)
+36.     Survey PL R4 (Fish 22)
+37.     Survey R5 PS (Fish 12)
+38.     Survey R7 PL (Fish 25)
+39.     Survey R8 PL (Fish 29)
+40.     Survey R6 PS (Fish 21)
+41.     Survey R7 PS (Fish 27)
+42.     Survey R8 PS (Fish 31)
