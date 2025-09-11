@@ -1,7 +1,6 @@
 ## Preprocess data, write TAF data tables
 
-## Before: fdesc.txt, skj.frq, skj.tag (boot/data),
-##         length.fit (boot/model_results)
+## Before: fdesc.txt, skj.frq, skj.tag (boot/data)
 ## After:  cpue.csv, fisheries.csv, length_comps.csv,
 ##         tag_recaptures.csv, tag_releases.csv (data)
 
