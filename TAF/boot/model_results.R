@@ -1,1 +1,5 @@
-untar("../../../../MFCL/End.tar.gz")
+# Copy files from MFCL to model_results
+
+library(TAF)
+
+cp("../../../../MFCL/*", ".")
