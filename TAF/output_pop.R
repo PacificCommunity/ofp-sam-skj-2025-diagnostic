@@ -6,9 +6,7 @@
 
 library(TAF)
 taf.library(FLR4MFCL)
-source("utilities.R")  # reading
-source("read.MFCLSel.alt.r")
-source("read.MFCLPar.alt.r")
+source("utilities.R")  # reading, read.MFCLPar.alt, read.MFCLSel.alt
 
 mkdir("output")
 
