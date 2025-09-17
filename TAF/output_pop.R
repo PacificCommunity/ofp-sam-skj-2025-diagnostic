@@ -6,12 +6,12 @@
 
 library(TAF)
 taf.library(FLR4MFCL)
-source("utilities.R")  # reading, read.MFCLPar.alt, read.MFCLSel.alt
+source("utilities.R")  # reading
 
 mkdir("output")
 
 # Read MFCL output files
-par <- reading("parameters", read.MFCLPar.alt(finalPar("model")))
+par <- reading("parameters", read.MFCLPar(finalPar("model")))
 rep <- reading("model estimates", read.MFCLRep(finalRep("model")))
 catches <- reading("catches", read.MFCLCatch("model/catch.rep",
                                              dimensions(par), range(par)))

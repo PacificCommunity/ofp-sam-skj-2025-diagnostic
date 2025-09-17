@@ -5,12 +5,12 @@
 
 library(TAF)
 taf.library(FLR4MFCL)
-source("utilities.R")  # reading, read.MFCLPar.alt, read.MFCLSel.alt
+source("utilities.R")  # reading
 
 mkdir("output")
 
 # Read MFCL output files
-par <- reading("parameters", read.MFCLPar.alt(finalPar("model")))
+par <- reading("parameters", read.MFCLPar(finalPar("model")))
 rep <- reading("model estimates", read.MFCLRep(finalRep("model")))
 like <- reading("likelihoods", read.MFCLLikelihood("model/test_plot_output"))
 lenfit <- reading("length fits", read.MFCLLenFit("model/length.fit"))
