@@ -1,6 +1,7 @@
 ## Extract model fit results, write TAF output tables
 
-## Before: 14.par, length.fit, plot-14.par.rep, test_plot_output (model)
+## Before: fisheries.csv (data), 09.par, length.fit, plot-09.par.rep,
+##         test_plot_output (model)
 ## After:  cpue.csv, length.comps.csv, likelihoods.csv, stats.csv (output)
 
 library(TAF)
@@ -48,6 +49,7 @@ names(cpue)[names(cpue) == "unit"] <- "fishery"
 cpue$area <- NULL
 cpue <- merge(cpue, fisheries[c("fishery", "area", "flag")])
 cpue <- cpue[cpue$flag == "INDEX",]
+cpue <- cpue[!is.na(cpue$obs),]
 cpue$obs <- exp(cpue$obs)
 cpue$pred <- exp(cpue$pred)
 cpue <- cpue[c("year", "season", "fishery", "area", "obs", "pred")]
