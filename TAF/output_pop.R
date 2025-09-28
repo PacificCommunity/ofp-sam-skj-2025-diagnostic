@@ -2,7 +2,8 @@
 
 ## Before: 14.par, catch.rep, plot-14.par.rep, (model), fisheries.csv (data)
 ## After:  biology.csv, biomass.csv, catch.csv, f_aggregate.csv, f_annual.csv,
-##         f_stage.csv, natage.csv, selectivity.csv, summary.csv (output)
+##         f_season.csv, f_stage.csv, natage.csv, selectivity.csv,
+##         summary.csv (output)
 
 library(TAF)
 taf.library(FLR4MFCL)
@@ -44,6 +45,13 @@ names(catch)[names(catch) == "unit"] <- "fishery"
 names(catch)[names(catch) == "data"] <- "t"
 catch$area <- fisheries$area[catch$fishery]
 catch <- catch[c("year", "fishery", "area", "t")]
+
+# Fishing mortality: season
+f.season.all <- as.data.frame(fm_aggregated(rep))
+f.season.reg <- as.data.frame(fm(rep))
+f.season <- rbind(f.season.reg, f.season.all)
+names(f.season)[names(f.season) == "data"] <- "f"
+f.season$unit <- f.season$iter <- NULL
 
 # Fishing mortality: annual
 f.annual.all <- as.data.frame(seasonSums(fm_aggregated(rep)))
@@ -96,6 +104,7 @@ write.taf(biomass, dir="output")
 write.taf(catch, dir="output")
 write.taf(f.aggregate, dir="output")
 write.taf(f.annual, dir="output")
+write.taf(f.season, dir="output")
 write.taf(f.stage, dir="output")
 write.taf(natage, dir="output")
 write.taf(selectivity, dir="output")
