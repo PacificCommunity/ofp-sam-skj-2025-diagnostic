@@ -26,8 +26,8 @@ names(laa)[names(laa) == "data"] <- "length"
 waa <- as.data.frame(mean_waa(rep))
 names(waa)[names(waa) == "data"] <- "weight"
 biology <- cbind(laa, waa["weight"])
-biology$age <- biology$age + 1 ## first age is 1 not 0
 biology$year <- biology$unit <- biology$area <- biology$iter <- NULL
+biology$age <- biology$age * 4 + as.integer(biology$season)
 biology$season <- NULL
 biology <- biology[order(biology$age),]
 biology$maturity <- mat(par)
